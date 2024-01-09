@@ -4,6 +4,7 @@ import re
 import nltk
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
+from sklearn.feature_extraction.text import TfidfVectorizer
 
 # Cargar datos desde el archivo CSV
 data = pd.read_csv('IMDB Dataset.csv')
@@ -31,4 +32,10 @@ def clean_text(text):
 # Aplicar la función de limpieza a cada reseña
 data['processed_review'] = data['review'].apply(lambda x: clean_text(x))
 
+# Crear una instancia de TF-IDF Vectorizer
+vectorizer = TfidfVectorizer(analyzer=lambda x: x)  # usar la función de limpieza definida anteriormente
+X = vectorizer.fit_transform(data['processed_review'])
+
+# Esto crea una matriz de características X
+y = data['label_column']
 
